@@ -48,6 +48,10 @@ public class Magpie4 {
 			response = transformIWantToStatement(statement);
 		}
 
+		else if (findKeyword(statement, "i", 0) >= 0 && findKeyword(statement, "you",
+				findKeyword(statement, "i", 0)) >= 0) {
+			int psn = findKeyword(statement, "i", 0);
+		}
 		else {
 			// Look for a two word (you <something> me)
 			// pattern
@@ -79,7 +83,7 @@ public class Magpie4 {
 		}
 		int psn = findKeyword(statement, "I want to", 0);
 		String restOfStatement = statement.substring(psn + 9).trim();
-		return "What would it mean to " + restOfStatement + "?";
+		return "Would you be really happy to " + restOfStatement + "?";
 	}
 
 	/**
@@ -104,6 +108,21 @@ public class Magpie4 {
 		String restOfStatement = statement.substring(psnOfYou + 3, psnOfMe)
 				.trim();
 		return "What makes you think that I " + restOfStatement + " you?";
+	}
+	
+	private String transformIYouStatenent (String statement) {
+		statement = statement.trim();
+		String lastChar = statement.substring(statement.length() - 1);
+		if (lastChar.equals(".")) {
+			statement = statement.substring(0, statement.length() - 1);
+		}
+		
+		int psnOfI = findKeyword(statement, "i", 0);
+		int psnOfYou = findKeyword(statement, "me", psnOfI + 1);
+		
+		String restofStatement = statement.substring(psnOfI + 1, psnOfYou)
+				.trim();
+		return "Why do you " + restofStatement + " me?";
 	}
 
 	/**
