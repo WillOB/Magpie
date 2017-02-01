@@ -49,8 +49,14 @@ public class Magpie4 {
 		}
 
 		else if (findKeyword(statement, "i", 0) >= 0 && findKeyword(statement, "you",
-				findKeyword(statement, "i", 0)) >= 0) {
+				0) >= 0) {
 			int psn = findKeyword(statement, "i", 0);
+			
+			if (psn >= 0 && findKeyword(statement, "you", psn) >= 0) {
+				response = transformIYouStatement(statement);
+			} else {
+				response = getRandomResponse();
+			}
 		}
 		else {
 			// Look for a two word (you <something> me)
@@ -110,7 +116,7 @@ public class Magpie4 {
 		return "What makes you think that I " + restOfStatement + " you?";
 	}
 	
-	private String transformIYouStatenent (String statement) {
+	private String transformIYouStatement(String statement) {
 		statement = statement.trim();
 		String lastChar = statement.substring(statement.length() - 1);
 		if (lastChar.equals(".")) {
@@ -118,7 +124,7 @@ public class Magpie4 {
 		}
 		
 		int psnOfI = findKeyword(statement, "i", 0);
-		int psnOfYou = findKeyword(statement, "me", psnOfI + 1);
+		int psnOfYou = findKeyword(statement, "you", psnOfI + 1);
 		
 		String restofStatement = statement.substring(psnOfI + 1, psnOfYou)
 				.trim();
